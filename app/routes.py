@@ -1,4 +1,11 @@
 from app import app   #从app包中导入Flask程序对象的实例app
+import os
+from flask import Flask, request, make_response, redirect, abort, render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField,SubmitField
+from wtforms.validators import DataRequired
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 #two routes,无论输入以下哪个URL路由，都会进入def index()函数中
 
@@ -7,4 +14,17 @@ from app import app   #从app包中导入Flask程序对象的实例app
 
 #one view_function
 def index():
-    return 'Hello,world!'
+    user = {'username':'lewis'}
+    posts = [
+            {
+                'author':{'username':'wendy'},
+                'body': 'this is a sunshine day!'
+            },
+            {
+                'author':{'username':'susan'},
+                'body': 'this is a big suprise!'
+
+            }
+            ]
+    return render_template('index.html',title='Home',user=user,posts=posts)
+    
