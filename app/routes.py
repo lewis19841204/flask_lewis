@@ -35,5 +35,5 @@ def login():
         msg = 'Login required for user {},remember_me={}'.format(login_form.username.data,login_form.remember_me.data)
         flash(msg)
         print(msg)
-        return redirect('/index')
+        return redirect(url_for('index'))
     return render_template('login.html',form=login_form,title='login')
