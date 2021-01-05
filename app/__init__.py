@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy  #从包中导入类
 from flask_migrate import Migrate
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(Config)
