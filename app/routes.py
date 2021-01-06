@@ -7,6 +7,8 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from app.forms import LoginForm
+from flask_login import current_user,login_user,logout_user
+from app.models import User,Post
 #two routes,无论输入以下哪个URL路由，都会进入def index()函数中
 
 @app.route('/')
@@ -30,10 +32,24 @@ def index():
 
 @app.route('/login',methods=['GET','POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     login_form = LoginForm()
+
     if login_form.validate_on_submit():
-        msg = 'Login required for user {},remember_me={}'.format(login_form.username.data,login_form.remember_me.data)
-        flash(msg)
-        print(msg)
+        user = User.query.filter_by(username = login_form.username.data).first()
+        if user is None or not user.check_password(login_form.password.data):
+            flash('invalid username or invalid password!')
+        login_user(user,login_form.remember_me.data)
+       # msg = 'Login required for user {},remember_me={}'.format(login_form.username.data,login_form.remember_me.data)
+       # flash(msg)
+       # print(msg)
         return redirect(url_for('index'))
     return render_template('login.html',form=login_form,title='login')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
