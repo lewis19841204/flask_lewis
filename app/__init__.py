@@ -13,9 +13,9 @@ db = SQLAlchemy(app)  #定义数据库对象
 migrate = Migrate(app,db)  #定义迁移引擎对象
 login = LoginManager(app) #定义登陆对象
 #print(app.config['SECRET_KEY'])
-
+login.login_view = 'login'   #等号右边的'login'就是routes.py中登录视图函数的函数名
 
 
 print('who used me:',__name__)
 
-from app import routes,models  
+from app import routes,models 
