@@ -6,7 +6,7 @@ from wtforms import StringField,SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from app.forms import LoginForm,RegistrationForm,EditProfileForm,ResetPasswordRequestForm,ResetPasswordForm
+from app.forms import LoginForm,RegistrationForm,EditProfileForm,ResetPasswordRequestForm,ResetPasswordForm,PostForm
 from flask_login import current_user,login_user,logout_user,login_required
 from app.models import User,Post
 from werkzeug.urls import url_parse
@@ -17,29 +17,27 @@ from time import sleep
 #two routes,无论输入以下哪个URL路由，都会进入def index()函数中
 #file = 'loving_you_truely.mp3'
 
-@app.route('/')
-@app.route('/index')
+@app.route('/',methods=['GET','POST'])
+@app.route('/index',methods=['GET','POST'])
 @login_required
 #one view_function
 def index():
-    #mixer.init()
-    # mixer.music.load(r'./loving_you_truely.mp3')
-    #mixer.music.play()
-   # user = {'username':'lewis'}
-    posts = [
-            {
-                'author':{'username':'wendy'},
-                'body': 'this is a sunshine day!'
-            },
-            {
-                'author':{'username':'susan'},
-                'body': 'this is a big suprise!'
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data,author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    posts = current_user.followed_posts().all()
+    return render_template('index.html',title='Home Page',form=form,posts=posts)
 
-            }
-            ]
-    return render_template('index.html',title='Home',posts=posts)
-   # sleep(7200)
-   # mixer.music.stop()
+@app.route('/explore')
+@login_required
+def explore():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html',title='Explore',posts=posts)
+
 
 @app.route('/login',methods=['GET','POST'])
 def login():
