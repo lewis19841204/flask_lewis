@@ -1,7 +1,7 @@
-from app import app
+from app import app,db
 from datetime import datetime
 from app.models import User,Post
-
+from app.forms import LoginForm,RegistrationForm,ResetPasswordRequestForm,EditProfileForm,ResetPasswordForm 
 
 @app.shell_context_processor
 def make_shell_context():

@@ -1,21 +1,22 @@
 from flask import Flask
 from config import Config
-from flask_sqlalchemy import SQLAlchemy  #从包中导入类
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 from flask_login import LoginManager
-
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-db = SQLAlchemy(app)  #定义数据库对象
-migrate = Migrate(app,db)  #定义迁移引擎对象
-login = LoginManager(app) #定义登陆对象
+db = SQLAlchemy(app)
+migrate = Migrate(app,db)
+login = LoginManager(app)
 #print(app.config['SECRET_KEY'])
-login.login_view = 'login'   #等号右边的'login'就是routes.py中登录视图函数的函数名
+login.login_view = 'login'
 
+mail = Mail(app)
 
 print('who used me:',__name__)
 
-from app import routes,models 
+from app import routes,models,forms
