@@ -21,6 +21,7 @@ class Config:
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL','false').lower() in ['true','on','1']
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-
+    ADMINS = ['1148054023@qq.com']
+    POSTS_PER_PAGE = 5 
 #创建一个数据库，名字叫app.db
 #config文件相当于是django里面的settings文件
