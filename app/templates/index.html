@@ -1,8 +1,13 @@
 {% extends "base.html"%}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block app_content %}
 	<h1>Hello,{{current_user.username}},your email is:{{current_user.email}}!</h1>
 	{% if form %}
+        {{ wtf.quick_form(form) }}
+	<br>
+	{% endif %}
+	{#
 	<form action="" method="post">
 		{{ form.hidden_tag() }}
 		<p>
@@ -14,15 +19,33 @@
 		</p>
 		<p>{{ form.submit() }}</p>
 	</form>
-	{% endif %}
+	#}
 	{% for post in posts %}
-	{% include '_post.html' %}
+		{% include '_post.html' %}
 	{% endfor %}
+
+	<nav aria-label="...">
+		<ul class="pager">
+			<li class="previous{% if not prev_url %} disabled{% endif %}">
+				<a href="{{ prev_url or '#' }}">
+					<span aria-hidden="true">&larr;</span> Newer posts
+				</a>
+			</li>
+
+			<li class="next{% if not next_url %} disabled{% endif %}">
+				<a href="{{ next_url or '#' }}">
+					Older posts<span aria-hidden="true">&rarr;</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	{#
 	{% if prev_url %}
 	<a href="{{ prev_url }}">Newer posts</a>
 	{% endif %}
 	{% if next_url %}
         <a href="{{ next_url }}">Older posts</a>
         {% endif %}
+	#}
 {% endblock %}
 
