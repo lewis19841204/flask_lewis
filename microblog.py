@@ -1,3 +1,4 @@
+from app import cli
 from app import app,db
 from datetime import datetime
 from app.models import User,Post
