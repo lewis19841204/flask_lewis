@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<tilte>Title</title>
+		<script>
+			function getRandom(){
+				var input = document.getElementById('max');
+				var req = new XMLHttpRequest();
+				req.open('get','random?max='+input.value,true);
+				req.send();
+				req.onload = function(){
+					console.log('收到服务器回应-callback');
+					var div = document.getElementById('num');
+					div.innerText = req.responseText;
+				//	console.log(req.responseText);
+				}
+				console.log('请求发送出去到服务器');
+			}
+		</script>
+	</head>
+	<body>
+		多少以内的随机数：<input type="text" id="max">
+		<button onclick="getRandom()">得到一个随机数</button>
+		<div id="num">
+			
+		</div>
+	</body>
+</html>
