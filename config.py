@@ -16,6 +16,8 @@ class Config:
     POSTS_PER_PAGE = 3
 
     LANGUAGES = ['en','zh'] #注意，不要填写zh_cn，有坑！
+    APPID = os.environ.get('APPID')
+    BD_TRANSLATOR_KEY = os.environ.get('BD_TRANSLATOR_KEY')
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
