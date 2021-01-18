@@ -1,5 +1,5 @@
 from app import app,db   #从app包中导入Flask程序对象的实例app
-import os
+import os,re
 from flask import Flask, request, make_response, redirect, abort, render_template,flash,url_for,jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
@@ -28,7 +28,7 @@ def index():
     form = PostForm()
     if form.validate_on_submit():
         language = guess_language(form.post.data)
-        if language == 'UNKOWN' or len(language) > 5:
+        if language == 'UNKNOWN' or len(language) > 5:
             language = ''
         post = Post(body=form.post.data,author=current_user,language=language)
         db.session.add(post)
@@ -189,3 +189,16 @@ def reset_password(token):
 @login_required
 def translate_text():
     return jsonify({'text':translate(request.form['text'],request.form['source_language'],request.form['dest_language'])})
+
+
+@app.route('/music')
+@login_required
+def music():
+    path = os.path.dirname(os.path.abspath(__file__))
+    path = path + '/static/music/'
+    all_files = os.listdir(path)
+    music_list = []
+    for i in all_files:
+        x = re.findall(r'(.*?).mp3', i)
+        music_list.append(x[0])
+    return render_template('music.html', music_list=music_list)
