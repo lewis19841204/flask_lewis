@@ -8,6 +8,8 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel,lazy_gettext as _l
+from flask_uploads import UploadSet, IMAGES, configure_uploads, ALL, DOCUMENTS, AUDIO, TEXT
+import os,re
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -23,6 +25,18 @@ mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 babel = Babel(app)
+
+#app.config['UPLOADED_PHOTO_DEST'] = os.path.dirname(os.path.abspath(__file__)) + '/static/music' 
+#app.config['UPLOADED_PHOTO_ALLOW'] = AUDIO
+#audios = UploadSet('AUDIO')
+#configure_uploads(app, audios)
+app.config['UPLOADED_AUDIO_DEST'] = '/root/blog/app/static/music'
+app.config['UPLOADED_AUDIO_ALLOW'] = AUDIO
+def dest(name):
+    return '{}/{}'.format(UPLOAD_AUDIO_DEST, name)
+#app.config['UPLOAD_PHOTO_URL'] = 'http://localhost:5000/'
+#audios = UploadSet('AUDIO')
+#configure_uploads(app, audios)
 
 
 print('who used me:',__name__)

@@ -29,3 +29,4 @@ class Config:
     POSTS_PER_PAGE = 5 
 #创建一个数据库，名字叫app.db
 #config文件相当于是django里面的settings文件
+

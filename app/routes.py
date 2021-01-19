@@ -17,6 +17,7 @@ from time import sleep
 from flask_babel import _,get_locale
 from guess_language import guess_language
 from app.translate import translate
+from flask_uploads import UploadSet, IMAGES, configure_uploads, ALL, DOCUMENTS, AUDIO, TEXT
 #two routes,无论输入以下哪个URL路由，都会进入def index()函数中
 #file = 'loving_you_truely.mp3'
 
@@ -202,3 +203,30 @@ def music():
         x = re.findall(r'(.*?).mp3', i)
         music_list.append(x[0])
     return render_template('music.html', music_list=music_list)
+
+'''
+app.config['UPLOADED_DEFAULT_DEST'] = os.path.dirname(os.path.abspath(__file__)) + '/static/music'
+app.config['UPLOADED_SONG_ALLOW'] = AUDIO
+def dest(name):
+    return '{}/{}'.format(UPLOAD_DEFAULT_DEST, name)
+#app.config['UPLOAD_PHOTO_URL'] = 'http://localhost:5000/'
+songs = UploadSet('AUDIO')
+configure_uploads(app, songs)
+'''
+audios = UploadSet('AUDIO')
+configure_uploads(app, audios)
+@app.route('/upload', methods=['POST', 'GET'])
+@login_required
+def upload():
+    if request.method == 'POST' and 'audio' in request.files:
+        f = audios.save(request.files['audio'])
+        return redirect(url_for('show', name=f))
+    return render_template('upload.html')
+
+@app.route('/audio/<name>')
+@login_required
+def show(name):
+    if name is None:
+        abort(404)
+    url = audios.url(name)
+    return render_template('show.html', url=url, name=name)
